@@ -18,21 +18,42 @@
             if (c.getContext) {   
                 var ctx = c.getContext("2d");
 
+                document.addEventListener("mousedown", mouseDown);
+
+                setInterval(draw, 1000 / 60);
+
+                function mouseDown(e) {
+                    mouseX = Math.floor(e.clientX / 10);
+                    mouseY = Math.floor(e.clientY / 10);
+                    world[mouseY][mouseX] = 1;
+                }
+
                 var width = ctx.canvas.width;
                 var height = ctx.canvas.height;
-                var world = [
-                    [1,0,1]
-                ]
-                
-                for (var i = 0; i < width; i++) {
-                    for (var j = 0; j < height; j++) {
-                        ctx.beginPath();
-                        ctx.strokeRect(i * 10, j * 10, 10, 10);
-                        if (world[i][j] == 1) {
-                            ctx.fillRect(i * 10, j * 10, 10, 10);
-                        }                       
+                var world = new Array(height / 10);
+
+                for (var i = 0; i < world.length; i++) {
+                    world[i] = new Array(width / 10);
+                }
+
+                for (var i = 0; i < world.length; i++) {
+                    for (var j = 0; j < world[0].length; j++) {
+                        world[i][j] = 0;
+                   }
+                }
+                function draw() {
+                    for (var i = 0; i < width / 10; i++) {
+                        for (var j = 0; j < height / 10; j++) {
+                            ctx.beginPath();
+                            if (world[j][i] == 1) {
+                                ctx.fillRect(i * 10, j * 10, 10, 10);
+                            } else {
+                                ctx.strokeRect(i * 10, j * 10, 10, 10);
+                            }                    
+                        }
                     }
                 }
+                
             }
         </script>
     </body>
