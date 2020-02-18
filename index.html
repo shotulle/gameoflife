@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>GAME OF LIFE</title>
+        <style>
+            canvas {
+                border-style: solid;
+                border-width: 1px;
+                border-color: lightgray;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas" width="1600" height="800"></canvas>
+
+        <script>
+            var c = document.getElementById("canvas");
+            if (c.getContext) {   
+                var ctx = c.getContext("2d");
+
+                var width = ctx.canvas.width;
+                var height = ctx.canvas.height;
+                var world = [
+                    [1,0,1]
+                ]
+                
+                for (var i = 0; i < width; i++) {
+                    for (var j = 0; j < height; j++) {
+                        ctx.beginPath();
+                        ctx.strokeRect(i * 10, j * 10, 10, 10);
+                        if (world[i][j] == 1) {
+                            ctx.fillRect(i * 10, j * 10, 10, 10);
+                        }                       
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
