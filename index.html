@@ -21,10 +21,80 @@
                 setInterval(draw, 1000 / 60);
 
                 document.addEventListener("mousedown", mouseDown);
+                document.addEventListener("keydown", keyDownFunc);
+
                 function mouseDown(e) {
+                    change = true;
                     mouseX = Math.floor(e.clientX / 10);
                     mouseY = Math.floor(e.clientY / 10);
                     world[mouseY][mouseX] = 1;
+                }
+
+                var change = true;
+
+                var keyDown = {};
+                var key = {
+                    Up: 122,
+                    Down: 123,
+                    Right: 8,
+                    Left: 12
+                };
+
+                function keyDownFunc(e) {
+                    change = true;
+                    var k = e.keyCode;
+
+                    console.log(k);
+                    
+                    switch(k) {
+                        case 38:
+                            for (var i = 1; i < world.length; i++) {
+                                for (var j = 0; j < world[0].length; j++) {
+                                    if (world[i][j] == 1) {
+                                        world[i][j] = 0;
+                                        world[i - 1][j] = 1;
+                                    }
+                                }
+                            }
+                            break;
+
+                        case 40:
+                            for (var i = world.length - 2; i >= 0; i--) {
+                                for (var j = 0; j < world[0].length; j++) {
+                                    if (world[i][j] == 1) {
+                                        world[i][j] = 0;
+                                        world[i + 1][j] = 1;
+                                    }
+                                }
+                            }
+                            break;
+
+                        case 37:
+                            for (var i = 0; i < world.length; i++) {
+                                for (var j = 1; j < world[0].length; j++) {
+                                    if (world[i][j] == 1) {
+                                        world[i][j] = 0;
+                                        world[i][j - 1] = 1;
+                                    }
+                                }
+                            }
+                            break;
+
+                        case 39:
+                        for (var i = 0; i < world.length; i++) {
+                            for (var j = world[0].length - 2; j >= 0; j--) {
+                                if (world[i][j] == 1) {
+                                    world[i][j] = 0;
+                                    world[i][j + 1] = 1;
+                                }
+                            }
+                        }
+                        break;
+
+                        default:
+                            break;
+                    }
+                        
                 }
 
                 var width = ctx.canvas.width;
@@ -42,15 +112,21 @@
                 }
                 
                 function draw() {
-                    for (var i = 0; i < width / 10; i++) {
-                        for (var j = 0; j < height / 10; j++) {
-                            ctx.beginPath();
-                            if (world[j][i] == 1) {
-                                ctx.fillRect(i * 10, j * 10, 10, 10);
-                            } else {
-                                ctx.strokeRect(i * 10, j * 10, 10, 10);
-                            }                    
+                    if (change) {
+                        for (var i = 0; i < width / 10; i++) {
+                            for (var j = 0; j < height / 10; j++) {
+                                ctx.beginPath();
+                                if (world[j][i] == 1) {
+                                    ctx.fillStyle = "black";
+                                    ctx.fillRect(i * 10, j * 10, 10, 10);             
+                                } else {
+                                    ctx.fillStyle = "white";
+                                    ctx.fillRect(i * 10, j * 10, 10, 10);
+                                    ctx.strokeRect(i * 10, j * 10, 10, 10);
+                                }                    
+                            }
                         }
+                        change = false;
                     }
                 }
                 
