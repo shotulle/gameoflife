@@ -18,7 +18,8 @@
             if (c.getContext) {   
                 var ctx = c.getContext("2d");
 
-                setInterval(draw, 1000 / 60);
+                setInterval(draw, 1000/60);
+                setInterval(auto, 1000);
 
                 document.addEventListener("mousedown", mouseDown);
                 document.addEventListener("keydown", keyDownFunc);
@@ -92,9 +93,67 @@
                         break;
 
                         default:
-                            break;
+                        break;
                     }
                         
+                }
+
+                function auto() {
+                    change = true;
+                    var random = 1 + Math.floor( Math.random() * 4 );
+                    
+                    switch(random) {
+
+                        case 1:
+                            for (var i = 1; i < world.length; i++) {
+                                for (var j = 0; j < world[0].length; j++) {
+                                    if (world[i][j] == 1) {
+                                        world[i][j] = 0;
+                                        world[i - 1][j] = 1;
+                                    }
+                                }
+                            }
+                            
+                            break;
+
+                        case 2:
+                            for (var i = world.length - 2; i >= 0; i--) {
+                                for (var j = 0; j < world[0].length; j++) {
+                                    if (world[i][j] == 1) {
+                                        world[i][j] = 0;
+                                        world[i + 1][j] = 1;
+                                    }
+                                }
+                            }
+                            break;
+
+                        case 3:
+                            for (var i = 0; i < world.length; i++) {
+                                for (var j = 1; j < world[0].length; j++) {
+                                    if (world[i][j] == 1) {
+                                        world[i][j] = 0;
+                                        world[i][j - 1] = 1;
+                                    }
+                                }
+                            }
+                            break;
+
+                        case 4:
+                        for (var i = 0; i < world.length; i++) {
+                            for (var j = world[0].length - 2; j >= 0; j--) {
+                                if (world[i][j] == 1) {
+                                    world[i][j] = 0;
+                                    world[i][j + 1] = 1;
+                                }
+                            }
+                        }
+                        break;
+
+                        default:
+                        break;
+
+                    }                   
+
                 }
 
                 var width = ctx.canvas.width;
@@ -118,7 +177,8 @@
                                 ctx.beginPath();
                                 if (world[j][i] == 1) {
                                     ctx.fillStyle = "black";
-                                    ctx.fillRect(i * 10, j * 10, 10, 10);             
+                                    ctx.fillRect(i * 10, j * 10, 10, 10);
+                                    // setTimeout(auto, 1000);
                                 } else {
                                     ctx.fillStyle = "white";
                                     ctx.fillRect(i * 10, j * 10, 10, 10);
